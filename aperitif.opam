@@ -7,8 +7,10 @@ run-test: [ "dune" "runtest" "-p" name "-j" jobs ]
 depends: [
   "ocaml"        {>= "5.0.0"}
   "dune"         {>= "2.8.0"}
+  "miou"
+  "moonpool"
   "eio"          {= "dev"}
-  "eio_main"    {= "dev"}
+  "eio_main"     {= "dev"}
 ]
 pin-depends:[
     [ "eio.dev" "git+https://github.com/patricoferris/eio#6f8d307f602eb6b54234f9c3681f081be5de0b88" ]
