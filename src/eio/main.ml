@@ -60,7 +60,7 @@ and hash_of_entries = function
       Hash.get ctx
 
 let run fn path =
-  Eio_posix.run @@ fun env ->
+  Eio_main.run @@ fun env ->
   let fs = Eio.Stdenv.fs env in
   let arg = fs / path in
   fn arg

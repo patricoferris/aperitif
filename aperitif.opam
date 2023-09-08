@@ -1,0 +1,18 @@
+opam-version: "2.0"
+name:         "aperitif"
+
+build: [ "dune" "build" "-p" name "-j" jobs ]
+run-test: [ "dune" "runtest" "-p" name "-j" jobs ]
+
+depends: [
+  "ocaml"        {>= "5.0.0"}
+  "dune"         {>= "2.8.0"}
+  "eio"          {= "dev"}
+  "eio_main"    {= "dev"}
+]
+pin-depends:[
+    [ "eio.dev" "git+https://github.com/patricoferris/eio#6f8d307f602eb6b54234f9c3681f081be5de0b88" ]
+    [ "eio_posix.dev" "git+https://github.com/patricoferris/eio#6f8d307f602eb6b54234f9c3681f081be5de0b88" ]
+    [ "eio_linux.dev" "git+https://github.com/patricoferris/eio#6f8d307f602eb6b54234f9c3681f081be5de0b88" ]
+    [ "eio_main.dev" "git+https://github.com/patricoferris/eio#6f8d307f602eb6b54234f9c3681f081be5de0b88" ]
+]
