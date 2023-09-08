@@ -4,19 +4,19 @@ module Hash = Digestif.SHA1
 let ( / ) = Path.( / )
 
 let hash_of_blob filename =
-  Path.with_open_in filename @@ fun ic ->
-  let ln = File.size ic in
-  let rec go buf ctx =
+  let ctx = Hash.empty in
+  let rec go ic buf ctx =
     match Flow.single_read ic buf with
     | 0 | (exception End_of_file) -> Hash.get ctx
     | len ->
-        let ctx = Hash.feed_bigstring ctx buf.buffer ~len in
-        go buf ctx
+      let ctx = Hash.feed_bigstring ctx buf.buffer ~len in
+      go ic buf ctx
   in
-  let ctx = Hash.empty in
+  Path.with_open_in filename @@ fun ic ->
+  let ln = File.size ic in
   let str = Fmt.str "blob %a\000" Optint.Int63.pp ln in
   let ctx = Hash.feed_string ctx str in
-  go (Cstruct.create 0x1000) ctx
+  go ic (Cstruct.create 0x1000) ctx
 
 let empty_tree = Hash.digest_string "tree 0\000"
 
@@ -60,7 +60,7 @@ and hash_of_entries = function
       Hash.get ctx
 
 let run fn path =
-  Eio_main.run @@ fun env ->
+  Eio_posix.run @@ fun env ->
   let fs = Eio.Stdenv.fs env in
   let arg = fs / path in
   fn arg
